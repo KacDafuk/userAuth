@@ -27,7 +27,12 @@ app.post("/register", async (req, res) => {
   if (user) {
     return res.json({ status: "error", message: "email already taken" });
   }
-  const newPassword = await bcrypt.hash(password, 10);
+  let newPassword;
+  try {
+    newPassword = await bcrypt.hash(password);
+  } catch (e) {
+    resp.json({ status: e.message, a: "BCRYPT FAIL" });
+  }
   try {
     await User.create({
       email,
@@ -37,6 +42,7 @@ app.post("/register", async (req, res) => {
       lastLoginTime: "-",
       name: name,
     });
+    res.json({ status: 200, message: "user created" });
   } catch (e) {
     e.message;
     res.json({ status: "error" });
@@ -51,7 +57,12 @@ app.post("/login", async (req, res) => {
     return res.json({ status: "404", message: "incorrect data" });
   }
   await User.updateOne({ email }, { $set: { lastLoginTime: curTime } });
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  let isPasswordValid;
+  try {
+    isPasswordValid = await bcrypt.compare(password, user.password);
+  } catch (e) {
+    resp.json({ status: e.message });
+  }
   if (isPasswordValid) {
     const token = jwt.sign(
       {
