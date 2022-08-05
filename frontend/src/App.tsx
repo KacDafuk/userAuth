@@ -1,10 +1,11 @@
-import { Button } from "react-bootstrap";
+import Routes from "./routes/Routes";
+import Navbar from "./components/navbar/Navbar";
 function App() {
-  alert("TEST");
   return (
-    <div className="App">
-      <Button>TEST BUTTON</Button>
-    </div>
+    <>
+      <Navbar />
+      <Routes />
+    </>
   );
 }
 
