@@ -1,19 +1,6 @@
 import React, { useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 
 function App() {
-  console.log("deploy is working");
-  useEffect(() => {
-    async function connect() {
-      console.log("connection started new");
-      let resp = await fetch("https://protected-dawn-82633.herokuapp.com/test");
-      let { respData } = await resp.json();
-      console.log("finished");
-      console.log(respData);
-    }
-    connect();
-  });
   return (
     <div className="App">
       <header className="App-header">
