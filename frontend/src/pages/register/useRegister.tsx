@@ -19,7 +19,7 @@ const useRegister = () => {
         AUTH_URL + "/register",
         getAuthFetchOptions(data)
       );
-      handleRespData(await resp.json());
+      await handleRespData(resp);
     } catch (e) {
       if (e instanceof Error) {
         setRegisterError(e.message);
