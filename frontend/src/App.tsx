@@ -1,12 +1,7 @@
-import Routes from "./routes/Routes";
-import Navbar from "./components/navbar/Navbar";
-function App() {
-  return (
-    <>
-      <Navbar />
-      <Routes />
-    </>
-  );
-}
+import React from "react";
+
+const App = () => {
+  return <div>App</div>;
+};
 
 export default App;
