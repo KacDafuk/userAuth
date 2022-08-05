@@ -6,10 +6,13 @@ function App() {
   console.log("deploy works");
   useEffect(() => {
     async function connect() {
+      console.log("connection started");
       let resp = await fetch("https://dry-dawn-72966.herokuapp.com/test");
       let { respData } = await resp.json();
+      console.log("finished");
       console.log(respData);
     }
+    connect();
   });
   return (
     <div className="App">
