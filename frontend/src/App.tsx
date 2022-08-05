@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
-  console.log("deploy works");
+  console.log("deploy is working");
   useEffect(() => {
     async function connect() {
       console.log("connection started");
