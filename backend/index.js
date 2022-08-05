@@ -24,7 +24,6 @@ app.post("/register", async (req, res) => {
     return res.json({ status: "error", message: "email already taken" });
   }
   const newPassword = await bcrypt.hash(password, 10);
-  req.body;
   try {
     await User.create({
       email,
@@ -70,7 +69,6 @@ app.post("/dashboard", async (req, res) => {
     const currentUser = await User.findOne({ email });
     return res.json({ status: "ok", users, currentUser });
   } catch (error) {
-    error;
     res.json({ status: "498", error: "invalid token" });
   }
 });
