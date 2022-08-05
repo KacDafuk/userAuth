@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
   console.log("deploy works");
+  useEffect(() => {
+    async function connect() {
+      let resp = await fetch("https://dry-dawn-72966.herokuapp.com/test");
+      let { respData } = await resp.json();
+      console.log(respData);
+    }
+  });
   return (
     <div className="App">
       <header className="App-header">
