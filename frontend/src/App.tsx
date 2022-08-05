@@ -11,8 +11,14 @@ function App() {
         "Content-Type": "application/json",
       },
     })
-      .then((data) => data.json())
-      .then((x) => console.log(x));
+      .then((data) => {
+        console.log("DATA");
+        return data.json();
+      })
+      .then((x) => {
+        console.log("final");
+        console.log(x);
+      });
   });
   return (
     <>
