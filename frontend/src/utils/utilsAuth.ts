@@ -13,6 +13,7 @@ export function getAuthFetchOptions(data: any) {
 export async function handleRespData(response: any) {
   const data = await response.json();
   const { status, message } = data;
+  console.log(status, "STATUS");
   if (status !== 200) {
     if (message) throw new Error(message);
     throw new Error("something went wrong, try again ");

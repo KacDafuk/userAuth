@@ -12,7 +12,10 @@ const jwt = require("jsonwebtoken");
 app.use(express.json());
 app.use(cors());
 app.get("/", (req, res) => res.send("Hello World!"));
-app.post("/test", (req, res) => res.json({ a: "MY DATA" }));
+app.post("/test", async (req, res) => {
+  const user = await User.findOne({});
+  res.json({ user, data: "some data" });
+});
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app is listening at http://localhost:${port}`);
@@ -20,6 +23,7 @@ app.listen(process.env.PORT || port, () => {
 app.post("/register", async (req, res) => {
   const { email, password, curTime, name } = req.body;
   const user = await User.findOne({ email });
+  res.json({ status: user });
   if (user) {
     return res.json({ status: "error", message: "email already taken" });
   }
