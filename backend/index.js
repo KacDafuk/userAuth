@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 app.use(express.json());
 app.use(cors());
 app.get("/", (req, res) => res.send("Hello World!"));
-app.get("/test", (req, res) => res.send("World!"));
+app.get("/test", (req, res) => res.json({ a: "MY DATA" }));
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Example app is listening at http://localhost:${port}`);
