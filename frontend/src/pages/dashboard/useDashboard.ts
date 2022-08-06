@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AUTH_URL } from "../../Consts";
-import { DateTime } from "luxon";
+
 export type User = {
   email: string;
 };
@@ -66,7 +66,12 @@ const useDashboards = () => {
       const resp = await fetch(AUTH_URL + "/dashboard/" + action, {
         ...getToolbarFetchOptions(),
       });
-      const { users: newUsers } = await resp.json();
+      const { users: newUsers, userLogout } = await resp.json();
+      if (userLogout) {
+        localStorage.setItem("token", "");
+        navigate("/login");
+        return;
+      }
       setUsers(newUsers);
     } catch (e) {}
   }
@@ -75,6 +80,7 @@ const useDashboards = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token") as string,
       },
       body: JSON.stringify(checkedUsers),
     };

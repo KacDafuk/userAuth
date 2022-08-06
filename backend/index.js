@@ -14,7 +14,7 @@ app.use(cors());
 app.get("/", (req, res) => res.send("Hello World!"));
 app.post("/test", async (req, res) => {
   const user = await User.findOne({});
-  res.json({ user, data: "some data" });
+  res.json({ user });
 });
 
 app.listen(process.env.PORT || port, () => {
@@ -23,16 +23,12 @@ app.listen(process.env.PORT || port, () => {
 app.post("/register", async (req, res) => {
   const { email, password, curTime, name } = req.body;
   const user = await User.findOne({ email });
-  res.json({ status: user });
+
   if (user) {
-    return res.json({ status: "error", message: "email already taken" });
+    return res.json({ status: "404", message: "email already taken" });
   }
-  let newPassword;
-  try {
-    newPassword = await bcrypt.hash(password);
-  } catch (e) {
-    resp.json({ status: e.message, a: "BCRYPT FAIL" });
-  }
+  const newPassword = await bcrypt.hash(password, 10);
+
   try {
     await User.create({
       email,
@@ -44,32 +40,26 @@ app.post("/register", async (req, res) => {
     });
     res.json({ status: 200, message: "user created" });
   } catch (e) {
-    e.message;
-    res.json({ status: "error" });
+    res.json({ status: "500" });
   }
 });
 
 app.post("/login", async (req, res) => {
-  const { email, password, blocked, curTime } = req.body;
+  const { email, password, curTime } = req.body;
   const user = await User.findOne({ email });
 
   if (!user) {
     return res.json({ status: "404", message: "incorrect data" });
   }
   await User.updateOne({ email }, { $set: { lastLoginTime: curTime } });
-  let isPasswordValid;
-  try {
-    isPasswordValid = await bcrypt.compare(password, user.password);
-  } catch (e) {
-    resp.json({ status: e.message });
-  }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
   if (isPasswordValid) {
     const token = jwt.sign(
       {
         name: user.name,
         email: user.email,
       },
-      "secret123"
+      "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC"
     );
 
     return res.json({ status: "200", user: token });
@@ -79,7 +69,7 @@ app.post("/login", async (req, res) => {
 app.post("/dashboard", async (req, res) => {
   const token = req.headers["x-access-token"];
   try {
-    const { email } = jwt.verify(token, "secret123");
+    const { email } = jwt.verify(token, "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC");
     const users = await User.find({}, { password: 0, __v: 0 });
     const currentUser = await User.findOne({ email });
     return res.json({ status: "ok", users, currentUser });
@@ -88,24 +78,32 @@ app.post("/dashboard", async (req, res) => {
   }
 });
 app.post("/dashboard/delete", async (req, res) => {
+  const token = req.headers["x-access-token"];
   try {
     const toDeleteUsersEmails = req.body;
+    const { email } = jwt.verify(token, "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC");
     await User.deleteMany({ email: { $in: toDeleteUsersEmails } });
     const users = await User.find();
-    return res.json({ status: "ok", users });
-  } catch (e) {}
+    const userLogout = await User.findOne({ email });
+    return res.json({ status: "ok", users, userLogout });
+  } catch (e) {
+    res.json({ status: 500 });
+  }
 });
 app.post("/dashboard/block", async (req, res) => {
+  const token = req.headers["x-access-token"];
   try {
+    const { email } = jwt.verify(token, "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC");
     const toDeleteUsersEmails = req.body;
     await User.updateMany(
       { email: { $in: toDeleteUsersEmails } },
       { blocked: true }
     );
     const users = await User.find();
-    return res.json({ status: "ok", users });
+    const { blocked } = await User.findOne({ email });
+    return res.json({ status: "ok", users, userLogout: blocked });
   } catch (e) {
-    //handle error
+    res.json({ status: 500 });
   }
 });
 app.post("/dashboard/unblock", async (req, res) => {
@@ -117,5 +115,7 @@ app.post("/dashboard/unblock", async (req, res) => {
     );
     const users = await User.find();
     return res.json({ status: "ok", users });
-  } catch (e) {}
+  } catch (e) {
+    res.json({ status: 500 });
+  }
 });

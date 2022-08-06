@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { AUTH_URL } from "../../Consts";
 import { useState } from "react";
 import { handleRespData } from "../../utils/utilsAuth";
+import { useNavigate } from "react-router-dom";
 const schema = yup.object().shape({
   email: yup.string().required().email(),
   password: yup.string().required(),
@@ -13,6 +14,7 @@ const schema = yup.object().shape({
 
 const useRegister = () => {
   const [registerError, setRegisterError] = useState("");
+  const navigate = useNavigate();
   async function submitRegister(data: any) {
     try {
       const resp = await fetch(
@@ -20,6 +22,7 @@ const useRegister = () => {
         getAuthFetchOptions(data)
       );
       await handleRespData(resp);
+      navigate("/login");
     } catch (e) {
       if (e instanceof Error) {
         setRegisterError(e.message);

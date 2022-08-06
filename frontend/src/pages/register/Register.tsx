@@ -2,11 +2,12 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import useRegister from "./useRegister";
 import { Alert } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 const Register = () => {
   const { register, handleSubmit, errors, submitRegister, registerError } =
     useRegister();
   return (
-    <>
+    <Container className="mx-auto mt-5 " fluid="sm">
       <Form onSubmit={handleSubmit(submitRegister)}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
@@ -32,15 +33,15 @@ const Register = () => {
             {...register("password")}
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
+        <Button variant="primary" type="submit" className="w-100">
+          Register
         </Button>
         {Object.values(errors).map((data) => (
           <Alert variant="danger">{(data as any)?.message} </Alert>
         ))}
         {registerError && <Alert variant={"danger"}>{registerError}</Alert>}
       </Form>
-    </>
+    </Container>
   );
 };
 
