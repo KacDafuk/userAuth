@@ -25,6 +25,7 @@ const useDashboards = () => {
     const resp = await fetch(AUTH_URL + pathname, {
       ...getFetchUsersOptions(),
     });
+    console.log(resp);
     await handleUserData(resp);
   }
   function getFetchUsersOptions() {
@@ -38,7 +39,7 @@ const useDashboards = () => {
 
   async function handleUserData(resp: Response) {
     const { users, currentUser, status } = await resp.json();
-
+    console.log(users, currentUser, status, "test");
     if (currentUser.blocked) {
       navigate("/login");
       localStorage.setItem("token", "");

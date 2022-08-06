@@ -29,14 +29,11 @@ const useLogin = () => {
         AUTH_URL + "/login",
         getAuthFetchOptions(data)
       );
-      console.log(response, "response");
       const respData = await response.json();
-      console.log(respData, "resp");
       handleRespData(respData);
       const { user } = respData;
       console.log(user);
       if (user) {
-        console.log("t");
         localStorage.setItem("token", user);
         navigate("/dashboard");
         return;
