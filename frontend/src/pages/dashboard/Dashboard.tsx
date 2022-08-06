@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   return users ? (
     <Container className="mx-auto mt-5 " fluid="sm">
-      <Table striped bordered hover className="w-90">
+      <Table striped bordered hover>
         <DashboardHeader
           toolbarAction={toolbarAction}
           users={users}

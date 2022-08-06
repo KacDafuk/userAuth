@@ -22,6 +22,7 @@ const useRegister = () => {
         getAuthFetchOptions(data)
       );
       await handleRespData(resp);
+      alert("your account has been created");
       navigate("/login");
     } catch (e) {
       if (e instanceof Error) {
