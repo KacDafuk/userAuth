@@ -12,10 +12,11 @@ export function getAuthFetchOptions(data: any) {
 }
 export function handleRespData(data: any) {
   const { status, message } = data;
-  if (status !== 200) {
+  if (status != 200) {
     if (message) throw new Error(message);
     throw new Error("something went wrong, try again ");
   }
+  return data;
 }
 export function handleError(
   e: unknown,

@@ -34,7 +34,9 @@ const useLogin = () => {
       console.log(respData, "resp");
       handleRespData(respData);
       const { user } = respData;
+      console.log(user);
       if (user) {
+        console.log("t");
         localStorage.setItem("token", user);
         navigate("/dashboard");
         return;
