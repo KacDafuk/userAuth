@@ -10,8 +10,7 @@ export function getAuthFetchOptions(data: any) {
     body: JSON.stringify({ ...data, curTime }),
   };
 }
-export async function handleRespData(response: any) {
-  const data = await response.json();
+export async function handleRespData(data: any) {
   const { status, message } = data;
   console.log(data, "STATUS");
   if (status !== 200) {
