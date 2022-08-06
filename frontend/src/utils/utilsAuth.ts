@@ -12,12 +12,11 @@ export function getAuthFetchOptions(data: any) {
 }
 export async function handleRespData(data: any) {
   const { status, message } = data;
-  console.log(data, "STATUS");
+
   if (status !== 200) {
     if (message) throw new Error(message);
     throw new Error("something went wrong, try again ");
   }
-  return data;
 }
 export function handleError(
   e: unknown,

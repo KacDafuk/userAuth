@@ -30,7 +30,7 @@ const useLogin = () => {
         getAuthFetchOptions(data)
       );
       const respData = await response.json();
-      handleRespData(respData);
+      await handleRespData(respData);
       const { user } = respData;
       if (user) {
         localStorage.setItem("token", user);
@@ -41,7 +41,7 @@ const useLogin = () => {
       handleError(e, setLoginError);
     }
   }
-  console.log(loginError, "ERROR LOGIN");
+
   return {
     register,
     handleSubmit,
