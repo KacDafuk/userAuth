@@ -41,7 +41,7 @@ const useLogin = () => {
       handleError(e, setLoginError);
     }
   }
-
+  console.log(loginError, "ERROR LOGIN");
   return {
     register,
     handleSubmit,

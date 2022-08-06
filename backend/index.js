@@ -25,7 +25,7 @@ app.post("/register", async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user) {
-    return res.json({ status: "404", message: "email already taken" });
+    return res.json({ status: 404, message: "email already taken" });
   }
   const newPassword = await bcrypt.hash(password, 10);
 
@@ -40,7 +40,7 @@ app.post("/register", async (req, res) => {
     });
     res.json({ status: 200, message: "user created" });
   } catch (e) {
-    res.json({ status: "500" });
+    res.json({ status: 500 });
   }
 });
 
@@ -49,20 +49,24 @@ app.post("/login", async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.json({ status: "404", message: "incorrect data" });
+    return res.json({ status: 404, message: "incorrect data" });
   }
-  await User.updateOne({ email }, { $set: { lastLoginTime: curTime } });
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (isPasswordValid) {
-    const token = jwt.sign(
-      {
-        name: user.name,
-        email: user.email,
-      },
-      "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC"
-    );
+  try {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    await User.updateOne({ email }, { $set: { lastLoginTime: curTime } });
+    if (isPasswordValid) {
+      const token = jwt.sign(
+        {
+          name: user.name,
+          email: user.email,
+        },
+        "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC"
+      );
 
-    return res.json({ status: "200", user: token });
+      return res.json({ status: 200, user: token });
+    }
+  } catch (e) {
+    res.json({ status: 500 });
   }
 });
 
@@ -72,7 +76,7 @@ app.post("/dashboard", async (req, res) => {
     const { email } = jwt.verify(token, "UK1S9NwqY3aXPxXUuD8YMm3sZQmt6zxC");
     const users = await User.find({}, { password: 0, __v: 0 });
     const currentUser = await User.findOne({ email });
-    return res.json({ status: "ok", users, currentUser });
+    return res.json({ status: 200, users, currentUser });
   } catch (error) {
     res.json({ status: "498", error: "invalid token" });
   }
@@ -85,7 +89,7 @@ app.post("/dashboard/delete", async (req, res) => {
     await User.deleteMany({ email: { $in: toDeleteUsersEmails } });
     const users = await User.find();
     const userLogout = await User.findOne({ email });
-    return res.json({ status: "ok", users, userLogout });
+    return res.json({ status: 200, users, userLogout });
   } catch (e) {
     res.json({ status: 500 });
   }
@@ -101,7 +105,7 @@ app.post("/dashboard/block", async (req, res) => {
     );
     const users = await User.find();
     const { blocked } = await User.findOne({ email });
-    return res.json({ status: "ok", users, userLogout: blocked });
+    return res.json({ status: 200, users, userLogout: blocked });
   } catch (e) {
     res.json({ status: 500 });
   }
@@ -114,7 +118,7 @@ app.post("/dashboard/unblock", async (req, res) => {
       { blocked: false }
     );
     const users = await User.find();
-    return res.json({ status: "ok", users });
+    return res.json({ status: 200, users });
   } catch (e) {
     res.json({ status: 500 });
   }

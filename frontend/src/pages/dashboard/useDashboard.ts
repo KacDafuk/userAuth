@@ -44,7 +44,7 @@ const useDashboards = () => {
       localStorage.setItem("token", "");
       return;
     }
-    if (status === "ok") {
+    if (status === 200) {
       setUsers(users);
     }
   }

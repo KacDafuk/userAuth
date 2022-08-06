@@ -33,7 +33,7 @@ const Login = () => {
         {Object.values(errors).map((data) => (
           <Alert variant="danger">{(data as any)?.message} </Alert>
         ))}
-        {loginError && <Alert variant={"danger"}>{loginError}</Alert>}
+        {loginError && <Alert variant="danger">{loginError}</Alert>}
       </Form>
     </Container>
   );
