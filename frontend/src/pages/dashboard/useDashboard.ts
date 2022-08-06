@@ -68,6 +68,7 @@ const useDashboards = () => {
         ...getToolbarFetchOptions(),
       });
       const { users: newUsers, userLogout } = await resp.json();
+      console.log(newUsers, userLogout, "TEST");
       if (userLogout) {
         localStorage.setItem("token", "");
         navigate("/login");
