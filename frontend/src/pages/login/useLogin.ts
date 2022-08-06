@@ -29,7 +29,9 @@ const useLogin = () => {
         AUTH_URL + "/login",
         getAuthFetchOptions(data)
       );
+      console.log(response, "response");
       const respData = await response.json();
+      console.log(respData, "resp");
       handleRespData(respData);
       const { user } = respData;
       if (user) {
