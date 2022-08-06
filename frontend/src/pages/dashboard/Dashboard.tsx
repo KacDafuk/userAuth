@@ -1,3 +1,4 @@
+import Table from "react-bootstrap/Table";
 import DashboardBody from "./dashboardBody/DashboardBody";
 import DashboardHeader from "./dashboardHeader/DashboardHeader";
 import useDashboard from "./useDashboard";
@@ -8,7 +9,7 @@ const Dashboard = () => {
 
   return users ? (
     <Container className="mx-auto mt-5 " fluid="sm">
-      <table>
+      <Table striped bordered hover className="w-75">
         <DashboardHeader
           toolbarAction={toolbarAction}
           users={users}
@@ -19,7 +20,7 @@ const Dashboard = () => {
           isCheckedUser={isCheckedUser}
           users={users}
         />
-      </table>
+      </Table>
     </Container>
   ) : (
     <>
