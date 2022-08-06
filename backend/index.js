@@ -101,7 +101,6 @@ app.post("/dashboard/delete", async (req, res) => {
 });
 async function blockUsers(req, token, res) {
   const { email } = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  console.log(email, "TEST1");
   const toDeleteUsersEmails = req.body;
   await User.updateMany(
     { email: { $in: toDeleteUsersEmails } },
@@ -109,7 +108,6 @@ async function blockUsers(req, token, res) {
   );
   const users = await User.find();
   const { blocked } = await User.findOne({ email });
-  console.log(email, "blocked");
   return res.json({ status: 200, users, userLogout: blocked });
 }
 app.post("/dashboard/block", async (req, res) => {
