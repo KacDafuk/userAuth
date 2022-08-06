@@ -25,7 +25,7 @@ const useDashboards = () => {
     const resp = await fetch(AUTH_URL + pathname, {
       ...getFetchUsersOptions(),
     });
-    console.log(resp);
+    console.log(resp, "x-access-token", localStorage.getItem("token"));
     await handleUserData(resp);
   }
   function getFetchUsersOptions() {
@@ -68,7 +68,6 @@ const useDashboards = () => {
         ...getToolbarFetchOptions(),
       });
       const { users: newUsers, userLogout } = await resp.json();
-      console.log(newUsers, userLogout, "TEST");
       if (userLogout) {
         localStorage.setItem("token", "");
         navigate("/login");
