@@ -30,7 +30,7 @@ const useLogin = () => {
         getAuthFetchOptions(data)
       );
       const respData = await response.json();
-      await handleRespData(respData);
+      handleRespData(respData);
       const { user } = respData;
       if (user) {
         localStorage.setItem("token", user);

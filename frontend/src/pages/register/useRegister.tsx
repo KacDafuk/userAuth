@@ -21,7 +21,7 @@ const useRegister = () => {
         AUTH_URL + "/register",
         getAuthFetchOptions(data)
       );
-      await handleRespData(resp);
+      handleRespData(resp);
       alert("your account has been created");
       navigate("/login");
     } catch (e) {
